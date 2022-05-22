@@ -1,6 +1,9 @@
 const path = require('path');
+const merge = require('webpack-merge');
+const baseConfig = require('./webpack.base');
+const webpackNodeExternals = require('webpack-node-externals');
 
-module.exports = {
+const config = {
     // Build bundle for node.js:
     target: 'node',
     // Root file of server app:
@@ -10,21 +13,9 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build')
     },
-    // Run bable on every file
-    module: {
-        rules: [
-            {
-                test: /\.js?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                options: {
-                    presets: [
-                        'react',
-                        'stage-0',
-                        ['env', {targets: {browsers: ['last 2 versions']}}]
-                    ]
-                }
-            }
-        ]
-    }
+    // This library creates an externals function that ignores node_modules when bundling in Webpack.
+    // https://www.npmjs.com/package/webpack-node-externals
+    externals: [webpackNodeExternals()],
 }
+
+module.exports = merge(baseConfig, config);
