@@ -1,33 +1,36 @@
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import routes  from '../client/routes';
-import { Provider } from 'react-redux';
-import serializeJavascript from 'serialize-javascript';
-import { renderRoutes } from 'react-router-config';
+import React from "react";
+import { renderToString } from "react-dom/server";
+import { StaticRouter } from "react-router-dom";
+import routes from "../client/routes";
+import { Provider } from "react-redux";
+import serializeJavascript from "serialize-javascript";
+import { renderRoutes } from "react-router-config";
 
 export default (req, store) => {
+  const content = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={{}}>
+        <div>{renderRoutes(routes)}</div>
+      </StaticRouter>
+    </Provider>
+  );
 
-    const content = renderToString(
-        <Provider store={store}>
-            <StaticRouter location={req.path} context={{}}>
-                <div>{renderRoutes(routes)}</div>
-            </StaticRouter>
-        </Provider>
-    );
-
-    const html = `
+  const html = `
         <html>
-            <head></head>
+            <head>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+            </head>
             <body>
                 <div id="root">${content}</div>
                 <script>
-                    window.INITIAL_STATE = ${serializeJavascript((store.getState()))}
+                    window.INITIAL_STATE = ${serializeJavascript(
+                      store.getState()
+                    )}
                 </script>
             </body>
             <script src="bundle.js"></script>
         </html>
-    `
+    `;
 
-    return html;
-}
+  return html;
+};

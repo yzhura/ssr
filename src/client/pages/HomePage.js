@@ -2,9 +2,9 @@ import React from "react";
 
 const HomePage = () => {
   return (
-    <div>
-      <div>Home rendered!</div>
-      <button onClick={() => console.log('Clicked')}>Click me!</button>
+    <div className="center-align">
+      <h3>Welcome</h3>
+      <p>this app work with server side rendering</p>
     </div>
   )
 }
