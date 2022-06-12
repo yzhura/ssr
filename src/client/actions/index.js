@@ -12,7 +12,7 @@ export const fetchUsers = () => async (dispath, _, api) => {
 
 export const fetchCurrentUser = () => async (dispath, _, api) => {
     const res = await api.get('/current_user');
-    console.log('res: ', res);
+    
     dispath({
         type: FETCH_CURRENT_USER,
         payload: res
