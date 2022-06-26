@@ -4,8 +4,6 @@ import { fetchUsers } from "../actions";
 
 class UsersListPage extends Component {
     componentDidMount() {
-        if(!window.INITIAL_STATE) {
-        }
         this.props.fetchUsers();
     }
 
